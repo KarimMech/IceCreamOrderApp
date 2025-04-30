@@ -5,12 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.foundation.layout.*
 
 @Composable
-fun IceCreamApp(viewModel: CartViewModel = CartViewModel()) {
-    var showCart by remember { mutableStateOf(false) }
+fun IceCreamApp(orderViewModel: OrderViewModel, viewModel: CartViewModel = CartViewModel()) {
+    var screen by remember { mutableStateOf("menu") }
 
-    if (showCart) {
-        CartScreen(viewModel, onBack = { showCart = false })
-    } else {
-        IceCreamMenu(viewModel, onCartClick = { showCart = true })
+    when (screen) {
+        "menu" -> IceCreamMenu(viewModel) { screen = "cart" }
+        "cart" -> CartScreen(viewModel, orderViewModel) { screen = "menu" }
+        "history" -> OrderHistoryScreen(orderViewModel) { screen = "menu" }
     }
 }
